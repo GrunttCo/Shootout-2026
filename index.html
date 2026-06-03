@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shoot-Out | Gruntt × By Eliana · 28 Jun 2026 · Bogotá</title>
+  <meta name="description" content="Torneo Shoot-Out individual. El formato de la MLS — arranca desde 32m, avanza y anota. 96 participantes · Bogotá · 28 junio 2026. Organizado por Gruntt × By Eliana." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== VARIABLES ===== */
+    :root {
+      --orange: #FF4D00;
+      --lime:   #C8FF00;
+      --dark:   #0D0D0D;
+      --dark2:  #141414;
+      --dark3:  #1C1C1C;
+      --dark4:  #242424;
+      --white:  #FFFFFF;
+      --muted:  rgba(255,255,255,0.48);
+      --border: rgba(255,255,255,0.06);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(13,13,13,0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px; letter-spacing: 2.5px;
+      color: var(--white); text-decoration: none;
+      display: flex; align-items: center; gap: 2px;
+    }
+    .nav-logo .g-o { color: var(--orange); }
+    .nav-logo .g-l { color: var(--lime); }
+    .nav-logo .g-x { color: rgba(255,255,255,0.25); margin: 0 7px; font-size: 16px; }
+
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; padding: 7px 14px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+
+    .nav-cta {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--orange); color: var(--white);
+      border: none; padding: 10px 24px;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      clip-path: polygon(7px 0%, 100% 0%, calc(100% - 7px) 100%, 0% 100%);
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: #ff6a1f; }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 62px; left: 0; right: 0;
+      background: var(--dark2); z-index: 999;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px 28px;
+      flex-direction: column; gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--white);
+      text-decoration: none; padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--orange); }
+    .mobile-menu .m-cta {
+      margin-top: 20px; background: var(--orange);
+      text-align: center; padding: 18px;
+      border-bottom: none; color: var(--white);
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    .mobile-menu .m-cta:hover { background: #ff6a1f; color: var(--white); }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 80px 40px 0;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+
+    .hero-slash {
+      position: absolute; top: 0; right: 0; width: 48%; height: 100%;
+      background: linear-gradient(160deg, rgba(255,77,0,0.06) 0%, transparent 60%);
+      clip-path: polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%);
+      pointer-events: none; z-index: 0;
+    }
+    .hero-slash-2 {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 100px;
+      background: linear-gradient(to bottom-right, var(--dark) 49.5%, var(--dark2) 50.5%);
+      pointer-events: none; z-index: 1;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+    /* stagger reveal helpers */
+    .h-reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s cubic-bezier(.22,1,.36,1), transform 0.65s cubic-bezier(.22,1,.36,1);
+    }
+    .h-reveal.vis { opacity: 1; transform: translateY(0); }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 22px;
+    }
+    .eyebrow-badge {
+      font-size: 10px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 12px;
+      border: 1px solid rgba(255,77,0,0.5); color: var(--orange);
+      clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+    }
+    .eyebrow-sep { color: rgba(255,255,255,0.2); font-size: 10px; }
+    .eyebrow-meta {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .hero-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(88px, 19vw, 240px);
+      line-height: 0.88; letter-spacing: -2px;
+      margin-bottom: 10px;
+    }
+    .hero-headline .stroke {
+      -webkit-text-stroke: 3px var(--orange);
+      color: transparent;
+    }
+
+    .hero-subhead {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(16px, 2.8vw, 28px);
+      font-weight: 300; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 44px;
+    }
+    .hero-subhead .date-hi { color: var(--white); font-weight: 500; }
+
+    .hero-stats {
+      display: flex; flex-wrap: wrap;
+      margin-bottom: 52px; gap: 0;
+    }
+    .stat-chip {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--white);
+      padding: 10px 22px; border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .stat-chip + .stat-chip { border-left: none; }
+    .chip-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--orange); flex-shrink: 0;
+    }
+    .chip-dot.l { background: var(--lime); }
+
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .btn-primary {
+      font-family: 'Oswald', sans-serif;
+      font-size: 15px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--orange); color: var(--white);
+      border: none; padding: 18px 44px;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      clip-path: polygon(9px 0%, 100% 0%, calc(100% - 9px) 100%, 0% 100%);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #ff6a1f; transform: translateY(-2px); }
+
+    .btn-outline {
+      font-family: 'Oswald', sans-serif;
+      font-size: 15px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase;
+      background: transparent; color: var(--white);
+      border: 1px solid rgba(255,255,255,0.28); padding: 18px 44px;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      clip-path: polygon(9px 0%, 100% 0%, calc(100% - 9px) 100%, 0% 100%);
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
+
+    .hero-alliance {
+      position: absolute; bottom: 130px; right: 40px; z-index: 3;
+      text-align: right;
+      opacity: 0; transform: translateX(18px);
+      transition: opacity 0.6s ease 0.55s, transform 0.6s ease 0.55s;
+    }
+    .hero-alliance.vis { opacity: 1; transform: translateX(0); }
+    .alliance-label {
+      font-size: 9px; font-weight: 800; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.25);
+      margin-bottom: 6px;
+    }
+    .alliance-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px; letter-spacing: 3px; line-height: 1;
+    }
+    .alliance-brand .g-o { color: var(--orange); }
+    .alliance-brand .g-l { color: var(--lime); }
+    .alliance-brand .g-x { color: rgba(255,255,255,0.2); margin: 0 6px; font-size: 18px; }
+
+    .scroll-ind {
+      position: absolute; bottom: 28px; left: 50%;
+      transform: translateX(-50%); z-index: 3;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0.35; animation: sbounce 2s ease-in-out infinite;
+    }
+    .scroll-ind span { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 28px; background: rgba(255,255,255,0.35); position: relative; }
+    .scroll-line::after {
+      content: ''; position: absolute; bottom: 0; left: 50%;
+      width: 7px; height: 7px;
+      border-right: 1px solid rgba(255,255,255,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.35);
+      transform: translateX(-50%) rotate(45deg);
+    }
+    @keyframes sbounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(7px); }
+    }
+
+    /* ===== SECTION BASE ===== */
+    .section { padding: 100px 40px; position: relative; overflow: hidden; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+
+    .sec-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--orange);
+      display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+    }
+    .sec-label::before { content: ''; display: block; width: 22px; height: 2px; background: var(--orange); }
+
+    .sec-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(44px, 8vw, 88px);
+      line-height: 0.92; letter-spacing: 1px; margin-bottom: 16px;
+    }
+    .sec-desc { font-size: 15px; color: var(--muted); max-width: 580px; line-height: 1.75; }
+
+    /* reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.vis { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+    .d5 { transition-delay: 0.5s; }
+
+    /* ===== DIAGONAL BREAKS ===== */
+    .diag-down {
+      height: 72px; overflow: hidden; line-height: 0; font-size: 0;
+    }
+    .diag-down svg { display: block; width: 100%; height: 100%; }
+
+    /* ===== MODALIDAD ===== */
+    #modalidad { background: var(--dark2); }
+
+    .bracket {
+      display: flex; align-items: stretch; gap: 2px;
+      margin-top: 44px; overflow-x: auto;
+    }
+    .bracket-phase {
+      flex: 1; min-width: 108px; background: var(--dark3);
+      padding: 28px 20px; text-align: center;
+      position: relative; border-top: 3px solid var(--dark4);
+      transition: border-color 0.3s;
+    }
+    .bracket-phase:hover { border-top-color: var(--orange); }
+    .bracket-phase.final { border-top-color: var(--lime); }
+    .bp-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px; line-height: 1; color: var(--orange); display: block;
+    }
+    .bracket-phase.final .bp-count { color: var(--lime); }
+    .bp-name {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-top: 4px;
+    }
+    .bracket-phase.final .bp-name { color: var(--lime); }
+    .bp-arrow {
+      position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+      color: rgba(255,77,0,0.4); font-size: 12px; z-index: 1; pointer-events: none;
+    }
+    .bracket-phase.final .bp-arrow { display: none; }
+
+    .format-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 2px;
+    }
+    .format-card {
+      background: var(--dark3); padding: 40px 36px;
+      border-top: 3px solid var(--dark4);
+      transition: border-color 0.3s;
+    }
+    .format-card:hover { border-top-color: var(--orange); }
+    .format-card.accent  { border-top-color: var(--orange); }
+    .format-card.accent2 { border-top-color: var(--lime); }
+    .fc-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px; color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 10px;
+    }
+    .fc-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .fc-title .t-o { color: var(--orange); }
+    .fc-title .t-l { color: var(--lime); }
+    .format-card p { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 16px; }
+    .format-card ul { list-style: none; }
+    .format-card ul li {
+      font-size: 13px; color: var(--muted);
+      padding: 7px 0; border-bottom: 1px solid var(--border);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .format-card ul li::before {
+      content: '→'; color: var(--orange); flex-shrink: 0; font-size: 11px; margin-top: 1px;
+    }
+
+    .format-bigstat {
+      grid-column: 1 / -1; background: var(--orange);
+      padding: 44px 40px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;
+    }
+    .fbs-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 12vw, 120px); line-height: 1; color: var(--white);
+    }
+    .fbs-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px; font-weight: 300; letter-spacing: 4px;
+      text-transform: uppercase; color: rgba(255,255,255,0.75);
+      margin-top: 4px;
+    }
+    .fbs-date {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(24px, 4vw, 48px); color: rgba(255,255,255,0.25); text-align: right;
+    }
+
+    /* ===== PREMIOS ===== */
+    #premios { background: var(--dark); }
+
+    .premios-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 44px;
+    }
+    .premio-card {
+      background: var(--dark3); padding: 44px 32px; text-align: center;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+      border-top: 4px solid transparent;
+    }
+    .premio-card.gold   { border-top-color: #FFD700; }
+    .premio-card.silver { border-top-color: #C0C0C0; }
+    .premio-card.bronze { border-top-color: #CD7F32; }
+    .premio-icon  { font-size: 44px; display: block; margin-bottom: 14px; }
+    .premio-pos   { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .premio-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 5vw, 52px); line-height: 1; margin-bottom: 12px;
+    }
+    .premio-card.gold   .premio-val { color: #FFD700; }
+    .premio-card.silver .premio-val { color: #C0C0C0; }
+    .premio-card.bronze .premio-val { color: #CD7F32; }
+    .premio-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    .premio-stream {
+      grid-column: 1 / -1; background: var(--dark3);
+      padding: 36px 40px; border-top: 4px solid var(--lime);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;
+    }
+    .stream-badge {
+      font-size: 10px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; padding: 4px 12px;
+      border: 1px solid var(--lime); color: var(--lime);
+      clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+      margin-bottom: 10px; display: inline-block;
+    }
+    .stream-text h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px; font-weight: 700; margin-bottom: 4px;
+    }
+    .stream-text p { font-size: 14px; color: var(--muted); }
+    .stream-live {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px; color: var(--lime); line-height: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .live-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--lime);
+      animation: lpulse 1.2s ease-in-out infinite;
+    }
+    @keyframes lpulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.35; transform: scale(0.65); }
+    }
+
+    .special-awards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 2px;
+    }
+    .award-card { background: var(--dark3); padding: 28px 28px; }
+    .award-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; margin-bottom: 6px;
+    }
+    .award-card:nth-child(1) .award-name { color: var(--orange); }
+    .award-card:nth-child(2) .award-name { color: var(--lime); }
+    .award-card:nth-child(3) .award-name { color: rgba(255,255,255,0.8); }
+    .award-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ===== MARCAS ===== */
+    #marcas { background: var(--dark2); }
+
+    .sponsor-block { margin-top: 44px; display: flex; flex-direction: column; gap: 2px; }
+    .sponsor-tier-hdr {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      padding: 18px 24px; background: var(--dark3);
+    }
+    .tier-badge {
+      font-size: 9px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; padding: 4px 12px;
+      clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+    }
+    .tb-title   { background: var(--orange); color: white; }
+    .tb-premium { background: rgba(255,215,0,0.15); border: 1px solid #FFD700; color: #FFD700; }
+    .tb-basico  { background: rgba(180,180,180,0.1); border: 1px solid rgba(180,180,180,0.4); color: #aaa; }
+    .tier-desc  { font-size: 13px; color: var(--muted); }
+    .tier-price {
+      font-family: 'Oswald', sans-serif;
+      font-size: 17px; font-weight: 700; color: var(--white); margin-left: auto;
+    }
+    .sponsor-logos {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 2px;
+    }
+    .sponsor-slot {
+      background: var(--dark4);
+      aspect-ratio: 3/1; min-height: 76px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      border: 1px dashed rgba(255,255,255,0.07);
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    }
+    .sponsor-slot:hover { border-color: var(--orange); background: rgba(255,77,0,0.04); }
+    .slot-bar { width: 72px; height: 28px; background: rgba(255,255,255,0.05); border-radius: 2px; }
+    .sponsor-slot.large .slot-bar { width: 108px; height: 40px; background: rgba(255,77,0,0.08); }
+    .slot-txt { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.17); }
+    .sponsor-slot:hover .slot-txt { color: var(--orange); }
+
+    .sponsor-cta-box {
+      background: var(--dark3); padding: 32px 36px;
+      border-left: 4px solid var(--orange);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+    }
+    .scb-text h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px; font-weight: 700; margin-bottom: 4px;
+    }
+    .scb-text p { font-size: 13px; color: var(--muted); }
+
+    /* ===== REGISTRO ===== */
+    #registro { background: var(--dark); }
+
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 44px;
+    }
+    .price-card { background: var(--dark3); padding: 48px 44px; }
+    .price-card.featured { background: var(--orange); }
+    .price-tag {
+      font-size: 9px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; display: block; margin-bottom: 10px;
+      color: var(--lime);
+    }
+    .price-card.featured .price-tag { color: rgba(0,0,0,0.5); }
+    .price-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .price-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px; line-height: 1; margin-bottom: 4px;
+    }
+    .price-per { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 36px; }
+    .price-card.featured .price-per { color: rgba(255,255,255,0.65); }
+    .price-list { list-style: none; margin-bottom: 40px; }
+    .price-list li {
+      font-size: 14px; color: var(--muted);
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .price-card.featured .price-list li { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.15); }
+    .price-list li::before { content: '✓'; color: var(--lime); flex-shrink: 0; font-weight: 800; }
+
+    .btn-reg {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      display: block; width: 100%; padding: 18px; text-align: center;
+      cursor: pointer; text-decoration: none;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: all 0.2s;
+    }
+    .btn-reg.dark  { background: var(--orange); color: white; }
+    .btn-reg.dark:hover  { background: #ff6a1f; }
+    .btn-reg.light { background: white; color: var(--dark); }
+    .btn-reg.light:hover { background: var(--lime); }
+
+    .registro-info {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 2px;
+    }
+    .ri-item { background: var(--dark3); padding: 28px 28px; }
+    .ri-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 8px;
+    }
+    .ri-item p { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .ri-item .pending { color: rgba(255,77,0,0.7); font-size: 12px; font-weight: 600; }
+
+    /* ===== COUNTDOWN ===== */
+    .countdown {
+      background: var(--dark2); padding: 40px;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; flex-wrap: wrap;
+    }
+    .cd-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-right: 12px;
+    }
+    .cd-unit {
+      background: var(--dark3); padding: 20px 28px; min-width: 92px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .cd-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px; line-height: 1; color: var(--orange);
+    }
+    .cd-lbl {
+      font-size: 9px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-top: 2px;
+    }
+    .cd-sep {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px; color: rgba(255,255,255,0.12);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #080808; padding: 56px 40px 28px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 40px; margin-bottom: 48px;
+      padding-bottom: 48px; border-bottom: 1px solid var(--border);
+    }
+    .footer-brand-block {}
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px; letter-spacing: 3px; line-height: 1.1;
+    }
+    .footer-brand .g-o { color: var(--orange); }
+    .footer-brand .g-l { color: var(--lime); }
+    .footer-brand .g-x { color: rgba(255,255,255,0.18); margin: 0 8px; }
+    .footer-tagline {
+      font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 1px; margin-top: 6px;
+    }
+    .footer-col h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.25);
+      margin-bottom: 16px;
+    }
+    .footer-col { display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a {
+      font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--orange); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 11px; color: rgba(255,255,255,0.18);
+    }
+    .footer-bottom a { color: rgba(255,77,0,0.4); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--orange); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .format-grid { grid-template-columns: 1fr; }
+      .premios-grid { grid-template-columns: 1fr; }
+      .premios-grid .premio-stream { flex-direction: column; }
+      .special-awards { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .registro-info { grid-template-columns: 1fr; }
+    }
+
+    /* ===== IMAGES ===== */
+    .hero-img-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=80&auto=format&fit=crop&crop=center');
+      background-size: cover; background-position: center 40%;
+      opacity: 0.13;
+      filter: grayscale(20%);
+    }
+
+    .action-banner {
+      position: relative; height: 400px; overflow: hidden;
+      margin-top: 44px;
+      clip-path: none;
+    }
+    .action-banner img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center 25%;
+      filter: grayscale(100%) contrast(1.15) brightness(0.8);
+      display: block;
+    }
+    .action-banner .ab-tint {
+      position: absolute; inset: 0;
+      background: rgba(255,77,0,0.68);
+      mix-blend-mode: multiply;
+    }
+    .action-banner .ab-content {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: flex-end;
+      padding: 48px 56px;
+      background: linear-gradient(to top, rgba(13,13,13,0.65) 0%, transparent 55%);
+    }
+    .action-banner .ab-tag {
+      font-size: 10px; font-weight: 800; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--lime);
+      margin-bottom: 10px; display: block;
+    }
+    .action-banner .ab-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 6.5vw, 72px); line-height: 0.92;
+      color: var(--white);
+    }
+    .action-banner .ab-sub {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px; font-weight: 300; letter-spacing: 4px;
+      text-transform: uppercase; color: rgba(255,255,255,0.65);
+      margin-top: 10px;
+    }
+
+    .atm-strip {
+      position: relative; height: 300px; overflow: hidden;
+    }
+    .atm-strip img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center 55%;
+      filter: grayscale(60%) brightness(0.45);
+      display: block;
+    }
+    .atm-strip .atm-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(13,13,13,0.6) 0%, rgba(200,255,0,0.08) 100%);
+    }
+    .atm-strip .atm-content {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; text-align: center; padding: 40px;
+    }
+    .atm-strip .atm-eyebrow {
+      font-size: 10px; font-weight: 800; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--lime);
+    }
+    .atm-strip .atm-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 5.5vw, 64px); line-height: 1; color: var(--white);
+    }
+    .atm-strip .atm-desc {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px; font-weight: 300; letter-spacing: 3px;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+
+      #hero { padding: 80px 20px 0; }
+      .hero-alliance { display: none; }
+      .hero-stats { flex-direction: column; }
+      .stat-chip { border-right: 1px solid rgba(255,255,255,0.1); }
+
+      .action-banner { height: 260px; clip-path: none; }
+      .action-banner .ab-content { padding: 24px 20px; }
+      .atm-strip { height: 220px; }
+
+      .section { padding: 64px 20px; }
+
+      .bracket { flex-wrap: nowrap; overflow-x: auto; }
+      .bracket-phase { min-width: 86px; padding: 20px 12px; }
+      .bp-count { font-size: 36px; }
+
+      .format-bigstat { flex-direction: column; }
+      .fbs-date { text-align: left; }
+
+      .sponsor-cta-box { flex-direction: column; }
+      .footer-top { flex-direction: column; gap: 28px; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 4px; }
+
+      .countdown { gap: 6px; padding: 24px 20px; }
+      .cd-unit { padding: 14px 18px; min-width: 70px; }
+      .cd-num { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav>
+    <a href="#hero" class="nav-logo">
+      <span class="g-o">GRUNTT</span>
+      <span class="g-x">×</span>
+      <span class="g-l">BY ELIANA</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#modalidad">Modalidad</a></li>
+      <li><a href="#premios">Premios</a></li>
+      <li><a href="#registro">Registro</a></li>
+    </ul>
+    <a href="#registro" class="nav-cta">Inscríbete</a>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#modalidad" class="ml">Modalidad</a>
+    <a href="#premios"   class="ml">Premios</a>
+    <a href="#registro"  class="ml">Registro</a>
+    <a href="#registro"  class="ml m-cta">Inscríbete Ahora →</a>
+  </div>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero">
+    <div class="hero-img-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-slash"></div>
+    <div class="hero-slash-2"></div>
+
+    <div class="hero-content">
+      <!-- eyebrow -->
+      <div class="hero-eyebrow h-reveal" id="he-ey">
+        <span class="eyebrow-badge">Gruntt × By Eliana</span>
+        <span class="eyebrow-sep">·</span>
+        <span class="eyebrow-meta">28 junio 2026</span>
+        <span class="eyebrow-sep">·</span>
+        <span class="eyebrow-meta">Bogotá</span>
+      </div>
+
+      <!-- headline -->
+      <h1 class="hero-headline h-reveal" id="he-h1">
+        SHOOT-<span class="stroke">OUT</span>
+      </h1>
+
+      <!-- subhead -->
+      <p class="hero-subhead h-reveal" id="he-sh">
+        Shoot-Out individual&nbsp;·&nbsp;<span class="date-hi">28 junio 2026</span>
+      </p>
+
+      <!-- stats -->
+      <div class="hero-stats h-reveal" id="he-st">
+        <div class="stat-chip"><span class="chip-dot"></span>96 PARTICIPANTES</div>
+        <div class="stat-chip"><span class="chip-dot l"></span>BOGOTÁ, COLOMBIA</div>
+        <div class="stat-chip"><span class="chip-dot" style="background:var(--lime)"></span>YOUTUBE EN VIVO</div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="hero-ctas h-reveal" id="he-ct">
+        <a href="#registro"  class="btn-primary">INSCRÍBETE AHORA</a>
+        <a href="#modalidad" class="btn-outline">VER MODALIDAD</a>
+      </div>
+    </div>
+
+    <!-- alliance badge -->
+    <div class="hero-alliance" id="he-al">
+      <p class="alliance-label">Organizado por</p>
+      <div class="alliance-brand">
+        <span class="g-o">GRUNTT</span>
+        <span class="g-x">×</span>
+        <span class="g-l">BY ELIANA</span>
+      </div>
+    </div>
+
+    <div class="scroll-ind">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- diagonal break -->
+  <div class="diag-down" style="background:var(--dark);">
+    <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 1440,0 1440,72 0,0" fill="#141414"/>
+    </svg>
+  </div>
+
+  <!-- ========== MODALIDAD ========== -->
+  <section id="modalidad" class="section">
+    <div class="section-inner">
+      <p class="sec-label reveal">Formato del torneo</p>
+      <h2 class="sec-title reveal d1">LA<br>MODALIDAD</h2>
+      <p class="sec-desc reveal d2">
+        El formato que hizo famosa a la MLS: el pateador arranca desde los 32 metros,
+        tiene 5 segundos y debe disparar antes de entrar al área de los 18.50m.
+        Sin penales estáticos — pura velocidad, decisión y gol.
+      </p>
+
+      <!-- bracket phases -->
+      <div class="bracket reveal d3">
+        <div class="bracket-phase">
+          <span class="bp-count">96</span>
+          <div class="bp-name">Participantes</div>
+          <span class="bp-arrow">▶</span>
+        </div>
+        <div class="bracket-phase">
+          <span class="bp-count">32</span>
+          <div class="bp-name">Grupos de 3</div>
+          <span class="bp-arrow">▶</span>
+        </div>
+        <div class="bracket-phase">
+          <span class="bp-count">32</span>
+          <div class="bp-name">Dieciseisavos</div>
+          <span class="bp-arrow">▶</span>
+        </div>
+        <div class="bracket-phase">
+          <span class="bp-count">16</span>
+          <div class="bp-name">Octavos</div>
+          <span class="bp-arrow">▶</span>
+        </div>
+        <div class="bracket-phase">
+          <span class="bp-count">8</span>
+          <div class="bp-name">Cuartos</div>
+          <span class="bp-arrow">▶</span>
+        </div>
+        <div class="bracket-phase final">
+          <span class="bp-count">4</span>
+          <div class="bp-name">Semifinal</div>
+          <span class="bp-arrow">▶</span>
+        </div>
+        <div class="bracket-phase final">
+          <span class="bp-count">2</span>
+          <div class="bp-name">Gran Final</div>
+        </div>
+      </div>
+
+      <!-- imagen acción shoot-out -->
+      <div class="action-banner reveal">
+        <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1600&q=80&auto=format&fit=crop&crop=center"
+             alt="Shoot-Out en acción" loading="lazy" />
+        <div class="ab-tint"></div>
+        <div class="ab-content">
+          <span class="ab-tag">El formato MLS · En Bogotá por primera vez</span>
+          <div class="ab-title">CORRE.<br>DECIDE.<br>ANOTA.</div>
+          <div class="ab-sub">5 segundos · Desde 32m · Antes del área de 18.50m</div>
+        </div>
+      </div>
+
+      <div class="format-grid">
+        <div class="format-card accent reveal">
+          <div class="fc-num">01</div>
+          <h3 class="fc-title"><span class="t-o">¿Qué es</span> el Shoot-Out?</h3>
+          <p>El formato que hizo famosa a la MLS: el pateador arranca desde los <strong style="color:var(--white)">32 metros</strong>, avanza en carrera y debe disparar antes de entrar al área de los 18.50m. No es un penal estático — es velocidad, decisión y definición.</p>
+          <ul>
+            <li>El pateador arranca desde el centro del campo</li>
+            <li>Tiempo máximo para disparar: <strong style="color:var(--orange)">5 segundos</strong></li>
+            <li>Disparo antes de entrar al área de 18.50m</li>
+            <li>El portero puede salir a cortar o anticipar</li>
+          </ul>
+        </div>
+        <div class="format-card reveal d1">
+          <div class="fc-num">02</div>
+          <h3 class="fc-title">Fase de grupos</h3>
+          <p>Los 96 participantes compiten individualmente. Se forman <strong style="color:var(--white)">32 grupos de 3</strong> — todos contra todos dentro del grupo. El ganador de cada grupo clasifica directamente a la fase eliminatoria.</p>
+          <ul>
+            <li>32 grupos de 3 participantes — todos contra todos</li>
+            <li><strong style="color:var(--white)">2 puntos</strong> por ronda ganada</li>
+            <li>Desempate: total de goles anotados en el grupo</li>
+            <li>Árbitro asignado por grupo</li>
+          </ul>
+        </div>
+        <div class="format-card reveal d2">
+          <div class="fc-num">03</div>
+          <h3 class="fc-title">Eliminación directa</h3>
+          <p>Desde dieciseisavos, un solo enfrentamiento define quién avanza. Cada jugador ejecuta <strong style="color:var(--white)">3 shoot-outs</strong> por cruce. En empate: muerte súbita — el primero en anotar sin que el rival iguale, avanza.</p>
+          <ul>
+            <li><strong style="color:var(--orange)">3 shoot-outs</strong> por jugador en cada cruce eliminatorio</li>
+            <li>Muerte súbita si empate al tercer intento</li>
+            <li>Porteros pueden usar guantes</li>
+            <li>Arranca desde 32m — disparo antes del área de 18.50m</li>
+          </ul>
+        </div>
+        <div class="format-card accent2 reveal d3">
+          <div class="fc-num">04</div>
+          <h3 class="fc-title"><span class="t-l">Todo el torneo:</span> En vivo</h3>
+          <p>No solo la final — <strong style="color:var(--white)">todo el torneo</strong> se transmite en directo por YouTube de Gruntt. Desde la fase de grupos hasta la ceremonia de premiación. Además, fotografía profesional en cada fase.</p>
+          <ul>
+            <li>Streaming completo — YouTube Gruntt desde la fase de grupos</li>
+            <li>Narración y análisis en tiempo real</li>
+            <li>Fotografía profesional en todas las fases</li>
+            <li>Ceremonia oficial de premiación en cancha</li>
+          </ul>
+        </div>
+        <div class="format-bigstat reveal">
+          <div>
+            <div class="fbs-label">PARTICIPANTES EN COMPETENCIA</div>
+            <div class="fbs-num"><span class="counter" data-target="96">0</span></div>
+          </div>
+          <div>
+            <div class="fbs-date">DOMINGO 28 JUN · 2026<br>BOGOTÁ, COLOMBIA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- diagonal break -->
+  <div class="diag-down" style="background:var(--dark2);">
+    <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,72 1440,0 1440,72" fill="#0D0D0D"/>
+    </svg>
+  </div>
+
+  <!-- ========== PREMIOS ========== -->
+  <section id="premios" class="section">
+    <div class="section-inner">
+      <p class="sec-label reveal">Lo que se juega</p>
+      <h2 class="sec-title reveal d1">PREMIOS</h2>
+      <p class="sec-desc reveal d2">
+        Cada participante tiene algo que demostrar. El torneo reconoce a los mejores
+        con premios en efectivo, visibilidad y experiencias únicas.
+      </p>
+
+      <div class="premios-grid">
+        <div class="premio-card gold reveal">
+          <span class="premio-icon">🥇</span>
+          <div class="premio-pos">1er Lugar</div>
+          <div class="premio-val">CAMPEÓN</div>
+          <div class="premio-desc">$1.000.000 COP en efectivo + Kit deportivo + Trofeo oficial Gruntt × By Eliana + visibilidad en redes de ambas marcas</div>
+        </div>
+        <div class="premio-card silver reveal d1">
+          <span class="premio-icon">🥈</span>
+          <div class="premio-pos">2do Lugar</div>
+          <div class="premio-val">FINALISTA</div>
+          <div class="premio-desc">$700.000 COP en efectivo + Kit Golty + Medallas + reconocimiento en YouTube durante el streaming</div>
+        </div>
+        <div class="premio-card bronze reveal d2">
+          <span class="premio-icon">🥉</span>
+          <div class="premio-pos">3er Lugar</div>
+          <div class="premio-val">SEMIFINAL</div>
+          <div class="premio-desc">$150.000 COP en efectivo + Pack Electrolit + Medallas + mención en redes de Gruntt y By Eliana</div>
+        </div>
+        <div class="premio-stream reveal d3">
+          <div class="stream-text">
+            <span class="stream-badge">TODO EL TORNEO EN VIVO</span>
+            <h3>YouTube Gruntt — Desde los grupos hasta la final</h3>
+            <p>Streaming completo de todas las fases. Narración, análisis, entrevistas y fotografía profesional en cada ronda desde Bogotá.</p>
+          </div>
+          <div class="stream-live">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+        </div>
+      </div>
+
+      <div class="special-awards reveal">
+        <div class="award-card">
+          <div class="award-name">MEJOR EJECUTOR</div>
+          <p>Reconocimiento al jugador con mayor efectividad en los disparos durante todas las fases del torneo.</p>
+        </div>
+        <div class="award-card">
+          <div class="award-name">4° PUESTO</div>
+          <p>$150.000 COP en efectivo + Pack Electrolit + Medallas.</p>
+        </div>
+        <div class="award-card">
+          <div class="award-name">LANZADOR MÁS VOTADO</div>
+          <p>Premio especial elegido por la audiencia del streaming en vivo. Votación en tiempo real durante la transmisión de YouTube.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== REGISTRO ========== -->
+  <section id="registro" class="section">
+    <div class="section-inner">
+      <p class="sec-label reveal">Únete al torneo</p>
+      <h2 class="sec-title reveal d1">INSCRIPCIÓN</h2>
+      <p class="sec-desc reveal d2">
+        Cupos limitados a 96 participantes. Inscripción válida al confirmar el pago.
+        Precio por persona — cada jugador se inscribe individualmente.
+      </p>
+
+      <div class="pricing-grid">
+        <!-- base -->
+        <div class="price-card reveal">
+          <span class="price-tag">Cupo Base</span>
+          <div class="price-name">Inscripción Base</div>
+          <div class="price-amount">$120K</div>
+          <div class="price-per">COP por participante · cupos limitados</div>
+          <ul class="price-list">
+            <li>Participación en todas las fases del torneo</li>
+            <li>Acceso al streaming en vivo por YouTube</li>
+            <li>Opción a premios por categoría</li>
+          </ul>
+          <a href="mailto:info@gruntt.co?subject=Inscripción%20Shoot-Out%20Base%20-%20$120.000" class="btn-reg dark">
+            INSCRIBIRME — $120.000
+          </a>
+        </div>
+
+        <!-- premium -->
+        <div class="price-card featured reveal d1">
+          <span class="price-tag">★ Cupo Pro</span>
+          <div class="price-name">Inscripción Pro</div>
+          <div class="price-amount">$180K</div>
+          <div class="price-per">COP por participante · experiencia completa</div>
+          <ul class="price-list">
+            <li>Todo lo incluido en el cupo base</li>
+            <li>Kit oficial Gruntt × By Eliana (mini balón + camisa + gorra)</li>
+            <li>Sesión de fotos profesional en el evento</li>
+            <li>Contenido personalizado para redes sociales</li>
+          </ul>
+          <a href="mailto:info@gruntt.co?subject=Inscripción%20Shoot-Out%20Pro%20-%20$180.000" class="btn-reg light">
+            INSCRIBIRME — $180.000
+          </a>
+        </div>
+      </div>
+
+      <div class="registro-info">
+        <div class="ri-item">
+          <div class="ri-label">Fecha y lugar</div>
+          <p>Domingo 28 de junio de 2026<br>Bogotá, Colombia<br><span class="pending">⚠ Venue por confirmar</span></p>
+        </div>
+        <div class="ri-item">
+          <div class="ri-label">Hora y streaming</div>
+          <p><span class="pending">⚠ Hora por confirmar</span><br>Todo el torneo en YouTube Gruntt<br>Fotografía profesional incluida</p>
+        </div>
+        <div class="ri-item">
+          <div class="ri-label">Contacto</div>
+          <p>
+            <a href="mailto:info@gruntt.co" style="color:var(--orange); text-decoration:none;">info@gruntt.co</a><br>
+            +57 320 3444124<br>
+            @gruntt.co &nbsp;·&nbsp; @byeliana
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- imagen atmósfera -->
+  <div class="atm-strip">
+    <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1600&q=80&auto=format&fit=crop&crop=center"
+         alt="Bogotá · 28 junio 2026" loading="lazy" />
+    <div class="atm-overlay"></div>
+    <div class="atm-content">
+      <span class="atm-eyebrow">Gruntt × By Eliana · Bogotá, Colombia</span>
+      <div class="atm-headline">28 DE JUNIO.<br>96 JUGADORES.<br>UN CAMPEÓN.</div>
+      <div class="atm-desc">Domingo · Todo el torneo en vivo por YouTube Gruntt</div>
+    </div>
+  </div>
+
+  <!-- ========== COUNTDOWN ========== -->
+  <div class="countdown">
+    <span class="cd-label">Faltan</span>
+    <div class="cd-unit">
+      <div class="cd-num" id="cd-days">--</div>
+      <div class="cd-lbl">días</div>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit">
+      <div class="cd-num" id="cd-hours">--</div>
+      <div class="cd-lbl">horas</div>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit">
+      <div class="cd-num" id="cd-mins">--</div>
+      <div class="cd-lbl">minutos</div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand-block">
+          <div class="footer-brand">
+            <span class="g-o">GRUNTT</span>
+            <span class="g-x">×</span>
+            <span class="g-l">BY ELIANA</span>
+          </div>
+          <div class="footer-tagline">El mundo deportivo en tus manos</div>
+        </div>
+        <div class="footer-col">
+          <h4>Evento</h4>
+          <a href="#modalidad">Modalidad</a>
+          <a href="#premios">Premios</a>
+          <a href="#registro">Inscripción</a>
+        </div>
+        <div class="footer-col">
+          <h4>Organizadores</h4>
+          <a href="https://gruntt.co" target="_blank" rel="noopener">gruntt.co</a>
+          <a href="mailto:info@gruntt.co">info@gruntt.co</a>
+          <a href="tel:+573203444124">+57 320 3444124</a>
+        </div>
+        <div class="footer-col">
+          <h4>Streaming</h4>
+          <a href="#">YouTube — Gruntt</a>
+          <a href="#">Instagram @gruntt.co</a>
+          <a href="#">TikTok @gruntt.co</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Gruntt. Todos los derechos reservados.</span>
+        <span>Torneo Shoot-Out · 28 junio 2026 · Bogotá, Colombia</span>
+        <span>Precios en COP · Individual · Sujetos a disponibilidad de cupos</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    // ---- HAMBURGER ----
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    document.querySelectorAll('.ml').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // ---- HERO STAGGER REVEAL ----
+    const heroItems = [
+      { id: 'he-ey', delay: 0   },
+      { id: 'he-h1', delay: 140 },
+      { id: 'he-sh', delay: 260 },
+      { id: 'he-st', delay: 380 },
+      { id: 'he-ct', delay: 500 },
+      { id: 'he-al', delay: 620 },
+    ];
+    heroItems.forEach(({ id, delay }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      setTimeout(() => el.classList.add('vis'), delay);
+    });
+
+    // ---- SCROLL REVEAL (IntersectionObserver) ----
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('vis');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    // ---- ANIMATED COUNTERS ----
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el    = entry.target;
+        const target = parseInt(el.dataset.target, 10);
+        let current  = 0;
+        const dur    = 1100;
+        const step   = target / (dur / 16);
+        const timer  = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(timer); }
+          el.textContent = Math.floor(current);
+        }, 16);
+        counterObs.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+    // ---- COUNTDOWN ----
+    function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
+    function updateCountdown() {
+      // Event: June 28, 2026, 9am Bogotá (UTC-5)
+      const event = new Date('2026-06-28T09:00:00-05:00');
+      const diff  = event - Date.now();
+      const dDays  = document.getElementById('cd-days');
+      const dHours = document.getElementById('cd-hours');
+      const dMins  = document.getElementById('cd-mins');
+      if (!dDays) return;
+      if (diff <= 0) {
+        dDays.textContent = dHours.textContent = dMins.textContent = '00';
+        return;
+      }
+      const days  = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins  = Math.floor((diff % 3600000)  / 60000);
+      dDays.textContent  = pad(days);
+      dHours.textContent = pad(hours);
+      dMins.textContent  = pad(mins);
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 30000);
+
+    // ---- NAV ACTIVE STATE ON SCROLL ----
+    const navSections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY + 80;
+      navSections.forEach(sec => {
+        const id   = sec.getAttribute('id');
+        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (!link) return;
+        const active = y >= sec.offsetTop && y < sec.offsetTop + sec.offsetHeight;
+        link.classList.toggle('active', active);
+      });
+    }, { passive: true });
+  </script>
+</body>
+</html>
