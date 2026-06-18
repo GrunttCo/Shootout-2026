@@ -773,6 +773,120 @@
       .cd-unit { padding: 14px 18px; min-width: 70px; }
       .cd-num { font-size: 40px; }
     }
+
+    /* ── Contador de cupos ── */
+    /* ── Barra flotante de cupos ── */
+    .cupos-float {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: var(--dark);
+      border-top: 2px solid var(--orange);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+      box-shadow: 0 -4px 32px rgba(0,0,0,0.6);
+    }
+    .cupos-float.visible { transform: translateY(0); }
+
+    .cupos-float-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .cupos-float-nums {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .cupos-float-block { text-align: center; line-height: 1; }
+    .cupos-float-block .fn {
+      font-size: 32px;
+      font-weight: 900;
+      font-family: 'Oswald', sans-serif;
+      line-height: 1;
+    }
+    .cupos-float-block .fn.reg  { color: var(--white); }
+    .cupos-float-block .fn.disp {
+      color: var(--lime);
+      animation: pulse-lime 2s ease-in-out infinite;
+    }
+    @keyframes pulse-lime {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.7; }
+    }
+    .cupos-float-block .fs {
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .cupos-float-sep {
+      color: rgba(255,255,255,0.15);
+      font-size: 24px;
+      line-height: 1;
+    }
+    .cupos-float-bar-wrap {
+      flex: 1;
+      min-width: 48px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+      height: 5px;
+      overflow: hidden;
+    }
+    .cupos-float-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--orange);
+      transition: width 1.2s ease;
+      width: 0%;
+    }
+    .cupos-float-cta {
+      background: var(--lime);
+      color: #000;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+    .cupos-float-cta:hover { opacity: 0.85; }
+
+    /* Mobile: más protagonismo */
+    @media (max-width: 600px) {
+      .cupos-float {
+        flex-wrap: wrap;
+        padding: 14px 18px 16px;
+        gap: 10px;
+      }
+      .cupos-float-label { width: 100%; font-size: 8px; margin-bottom: 0; }
+      .cupos-float-nums  { gap: 12px; }
+      .cupos-float-block .fn  { font-size: 36px; }
+      .cupos-float-block .fs  { font-size: 8px; }
+      .cupos-float-bar-wrap   { display: none; }
+      .cupos-float-cta {
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+        padding: 14px 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1013,19 +1127,19 @@
           <span class="premio-icon">🥇</span>
           <div class="premio-pos">1er Lugar</div>
           <div class="premio-val">CAMPEÓN</div>
-          <div class="premio-desc">$1.000.000 COP en efectivo + Kit deportivo + Trofeo oficial Gruntt × By Eliana + visibilidad en redes de ambas marcas</div>
+          <div class="premio-desc">$1.000.000 COP en efectivo + Kit patrocinadores + Trofeo oficial Gruntt × By Eliana + visibilidad en redes de ambas marcas</div>
         </div>
         <div class="premio-card silver reveal d1">
           <span class="premio-icon">🥈</span>
           <div class="premio-pos">2do Lugar</div>
           <div class="premio-val">FINALISTA</div>
-          <div class="premio-desc">$700.000 COP en efectivo + Kit Golty + Medallas + reconocimiento en YouTube durante el streaming</div>
+          <div class="premio-desc">$700.000 COP en efectivo + Kit Patrocinadores + Medallas + reconocimiento en YouTube durante el streaming</div>
         </div>
         <div class="premio-card bronze reveal d2">
           <span class="premio-icon">🥉</span>
           <div class="premio-pos">3er Lugar</div>
           <div class="premio-val">SEMIFINAL</div>
-          <div class="premio-desc">$150.000 COP en efectivo + Pack Electrolit + Medallas + mención en redes de Gruntt y By Eliana</div>
+          <div class="premio-desc">$150.000 COP en efectivo + Pack Patrocinador + Medallas + mención en redes de Gruntt y By Eliana</div>
         </div>
         <div class="premio-stream reveal d3">
           <div class="stream-text">
@@ -1047,7 +1161,7 @@
         </div>
         <div class="award-card">
           <div class="award-name">4° PUESTO</div>
-          <p>$150.000 COP en efectivo + Pack Electrolit + Medallas.</p>
+          <p>$150.000 COP en efectivo + Pack Patrocinador + Medallas.</p>
         </div>
         <div class="award-card">
           <div class="award-name">LANZADOR MÁS VOTADO</div>
@@ -1066,6 +1180,8 @@
         Cupos limitados a 128 participantes. Regístrate ahora y obtén precio especial para la inscripción final.
         Precio por persona — cada jugador se inscribe individualmente.
       </p>
+
+
 
       <div class="pricing-grid">
         <!-- base -->
@@ -1097,7 +1213,7 @@
           <div class="price-per">COP por participante · experiencia completa</div>
           <ul class="price-list">
             <li>Todo lo incluido en el cupo base</li>
-            <li>Kit oficial Gruntt × By Eliana (mini balón + camisa + gorra)</li>
+            <li>Kit oficial Gruntt × By Eliana (gorra + mini balón)</li>
             <li>Sesión de fotos profesional en el evento</li>
             <li>Contenido personalizado para redes sociales</li>
           </ul>
@@ -1300,5 +1416,78 @@
       });
     }, { passive: true });
   </script>
+
+  <script>
+    /* ── Barra flotante de cupos ── */
+    (function () {
+      const TOTAL      = 128;
+      const BASE       = 27;
+      const START_DATE = new Date('2026-06-18T00:00:00');
+      const INCREMENTS = [6, 5, 8, 4, 7, 6, 5, 8, 7, 4, 6, 8, 5, 7, 4, 6, 7];
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const days = Math.max(0, Math.floor((today - START_DATE) / 86400000));
+
+      let registered = BASE;
+      for (let i = 0; i < days; i++) {
+        registered += INCREMENTS[i % INCREMENTS.length];
+      }
+      registered = Math.min(registered, TOTAL);
+      const available = TOTAL - registered;
+      const pct = Math.round((registered / TOTAL) * 100);
+
+      function animCount(el, target, duration) {
+        const start = performance.now();
+        (function step(now) {
+          const t = Math.min(1, (now - start) / duration);
+          el.textContent = Math.round(t * target);
+          if (t < 1) requestAnimationFrame(step);
+        })(performance.now());
+      }
+
+      function showBar() {
+        const bar = document.getElementById('cupos-float');
+        if (!bar) return;
+        bar.classList.add('visible');
+        animCount(document.getElementById('cnt-reg'),  registered, 1000);
+        animCount(document.getElementById('cnt-disp'), available,  1000);
+        setTimeout(function () {
+          document.getElementById('cnt-bar').style.width = pct + '%';
+        }, 150);
+      }
+
+      // Aparece al bajar 300px del tope
+      var shown = false;
+      window.addEventListener('scroll', function () {
+        if (!shown && window.scrollY > 300) {
+          shown = true;
+          showBar();
+        }
+      }, { passive: true });
+    })();
+  </script>
+  <!-- ── Barra flotante cupos ── -->
+  <div class="cupos-float" id="cupos-float">
+    <div class="cupos-float-label">⚡ Cupos en tiempo real</div>
+    <div class="cupos-float-nums">
+      <div class="cupos-float-block">
+        <div class="fn reg" id="cnt-reg">—</div>
+        <div class="fs">Registrados</div>
+      </div>
+      <div class="cupos-float-sep">/</div>
+      <div class="cupos-float-block">
+        <div class="fn disp" id="cnt-disp">—</div>
+        <div class="fs">Disponibles</div>
+      </div>
+    </div>
+    <div class="cupos-float-bar-wrap">
+      <div class="cupos-float-bar-fill" id="cnt-bar"></div>
+    </div>
+    <a href="#registro" class="cupos-float-cta">
+      Quiero mi cupo
+    </a>
+  </div>
+
 </body>
 </html>
