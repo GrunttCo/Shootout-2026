@@ -1551,17 +1551,24 @@
       if (!pago) return;
       const token = params.get('token');
 
+      const ICON = {
+        check: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>',
+        clock: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+        x:     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+      };
       const MAP = {
-        aprobado:  { bg: '#1f8f4e', text: '✅ ¡Pago aprobado! Tu cupo está confirmado. Te enviamos los detalles por correo.' },
-        pendiente: { bg: '#b8860b', text: '⏳ Tu pago está en proceso. Te confirmamos por correo apenas se acredite.' },
-        fallido:   { bg: '#b23b3b', text: '❌ El pago no se completó. Puedes intentarlo de nuevo desde “Quiero mi cupo”.' },
+        aprobado:  { bg: '#1f8f4e', icon: ICON.check, text: '¡Pago aprobado! Tu cupo está confirmado. Te enviamos los detalles por correo.' },
+        pendiente: { bg: '#b8860b', icon: ICON.clock, text: 'Tu pago está en proceso. Te confirmamos por correo apenas se acredite.' },
+        fallido:   { bg: '#b23b3b', icon: ICON.x,     text: 'El pago no se completó. Puedes intentarlo de nuevo desde “Quiero mi cupo”.' },
       };
       const cfg = MAP[pago] || MAP.pendiente;
 
       const bar = document.createElement('div');
       bar.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:1100;background:${cfg.bg};color:#fff;
         font-family:Arial,sans-serif;font-size:14px;padding:12px 44px 12px 16px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.3)`;
-      bar.textContent = cfg.text;
+      const content = document.createElement('span');
+      content.innerHTML = cfg.icon + '<span>' + cfg.text + '</span>';
+      bar.appendChild(content);
       const x = document.createElement('button');
       x.textContent = '×';
       x.setAttribute('aria-label', 'Cerrar');
@@ -1577,7 +1584,7 @@
           .then((j) => {
             if (j.success && j.data.status === 'paid') {
               bar.style.background = MAP.aprobado.bg;
-              bar.childNodes[0].nodeValue = MAP.aprobado.text;
+              content.innerHTML = MAP.aprobado.icon + '<span>' + MAP.aprobado.text + '</span>';
             }
           })
           .catch(() => {});
