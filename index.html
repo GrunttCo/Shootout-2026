@@ -1463,7 +1463,9 @@
     })();
 
     /* ── Modal de inscripción (captura datos antes de pagar) ── */
-    (function () {
+    /* El markup del modal está más abajo en el DOM, así que esperamos a que
+       el HTML esté parseado antes de enlazar los elementos. */
+    document.addEventListener('DOMContentLoaded', function () {
       const modal   = document.getElementById('reg-modal');
       const form    = document.getElementById('reg-form');
       const titleEl = document.getElementById('reg-modal-title');
@@ -1540,7 +1542,7 @@
       });
 
       window.__openReg = open;
-    })();
+    });
 
     /* ── Retorno desde MercadoPago (?pago=aprobado|pendiente|fallido) ── */
     (function () {
