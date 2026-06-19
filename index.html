@@ -1198,7 +1198,7 @@
             <li>Opción a premios por categoría</li>
             <li>Souvenir primer torneo Shootout de Colombia</li>
           </ul>
-          <a href="https://mpago.li/2oTM4dm" class="btn-reg dark" target="_blank" rel="noopener">
+          <a href="https://mpago.li/2oTM4dm" class="btn-reg dark js-register" data-tier="base" target="_blank" rel="noopener">
             QUIERO CUPO BASE · $120K
           </a>
           <div class="mp-badge">
@@ -1219,7 +1219,7 @@
             <li>Sesión de fotos profesional en el evento</li>
             <li>Contenido personalizado para redes sociales</li>
           </ul>
-          <a href="https://mpago.li/1mB4yQh" class="btn-reg light" target="_blank" rel="noopener">
+          <a href="https://mpago.li/1mB4yQh" class="btn-reg light js-register" data-tier="pro" target="_blank" rel="noopener">
             QUIERO CUPO PRO · $180K
           </a>
           <div class="mp-badge">
@@ -1420,25 +1420,13 @@
   </script>
 
   <script>
-    /* ── Barra flotante de cupos ── */
+    /* ── Config backend Gruntt ── */
+    const API_BASE   = 'https://api.gruntt.co/api';
+    const EVENT_SLUG = 'shootout-2026';
+    let EVENT_DATA   = null;
+
+    /* ── Barra flotante de cupos (datos REALES del backend) ── */
     (function () {
-      const TOTAL      = 128;
-      const BASE       = 27;
-      const START_DATE = new Date('2026-06-18T00:00:00');
-      const INCREMENTS = [6, 5, 8, 4, 7, 6, 5, 8, 7, 4, 6, 8, 5, 7, 4, 6, 7];
-
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const days = Math.max(0, Math.floor((today - START_DATE) / 86400000));
-
-      let registered = BASE;
-      for (let i = 0; i < days; i++) {
-        registered += INCREMENTS[i % INCREMENTS.length];
-      }
-      registered = Math.min(registered, TOTAL);
-      const available = TOTAL - registered;
-      const pct = Math.round((registered / TOTAL) * 100);
-
       function animCount(el, target, duration) {
         const start = performance.now();
         (function step(now) {
@@ -1448,25 +1436,153 @@
         })(performance.now());
       }
 
-      function showBar() {
+      async function showBar() {
         const bar = document.getElementById('cupos-float');
         if (!bar) return;
-        bar.classList.add('visible');
-        animCount(document.getElementById('cnt-reg'),  registered, 1000);
-        animCount(document.getElementById('cnt-disp'), available,  1000);
-        setTimeout(function () {
-          document.getElementById('cnt-bar').style.width = pct + '%';
-        }, 150);
+        try {
+          const res = await fetch(`${API_BASE}/public/events/${EVENT_SLUG}`);
+          const json = await res.json();
+          if (!json.success || json.data.capacity == null) return; // sin cupos definidos → no mostramos números
+          EVENT_DATA = json.data;
+          const registered = json.data.registered || 0;
+          const available  = json.data.available;
+          const pct = Math.round((registered / json.data.capacity) * 100);
+          bar.classList.add('visible');
+          animCount(document.getElementById('cnt-reg'),  registered, 1000);
+          animCount(document.getElementById('cnt-disp'), available,  1000);
+          setTimeout(() => { document.getElementById('cnt-bar').style.width = pct + '%'; }, 150);
+        } catch (e) {
+          /* backend no disponible → no mostramos cifras inventadas */
+        }
       }
 
-      // Aparece al bajar 300px del tope
-      var shown = false;
+      let shown = false;
       window.addEventListener('scroll', function () {
-        if (!shown && window.scrollY > 300) {
-          shown = true;
-          showBar();
-        }
+        if (!shown && window.scrollY > 300) { shown = true; showBar(); }
       }, { passive: true });
+    })();
+
+    /* ── Modal de inscripción (captura datos antes de pagar) ── */
+    (function () {
+      const modal   = document.getElementById('reg-modal');
+      const form    = document.getElementById('reg-form');
+      const titleEl = document.getElementById('reg-modal-title');
+      const msgEl   = document.getElementById('reg-msg');
+      const submitB = document.getElementById('reg-submit');
+      let fallbackLink = null; // href del botón, por si el backend falla
+
+      function open(tier, link) {
+        fallbackLink = link;
+        form.tier_key.value = tier;
+        titleEl.textContent = tier === 'pro' ? 'Inscripción Cupo Pro · $180K' : 'Inscripción Cupo Base · $120K';
+        msgEl.textContent = '';
+        msgEl.className = 'reg-msg';
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => form.name.focus(), 100);
+      }
+      function close() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.js-register').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          open(btn.dataset.tier || 'base', btn.getAttribute('href'));
+        });
+      });
+      document.querySelectorAll('[data-close-modal]').forEach(el =>
+        el.addEventListener('click', close)
+      );
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (form.website.value) return; // honeypot
+        submitB.disabled = true;
+        submitB.textContent = 'Procesando…';
+        msgEl.textContent = '';
+        const payload = {
+          name:  form.name.value.trim(),
+          email: form.email.value.trim(),
+          phone: form.phone.value.trim(),
+          tier_key: form.tier_key.value,
+          city: form.city.value.trim() || null,
+          website: form.website.value,
+        };
+        try {
+          const res = await fetch(`${API_BASE}/public/events/${EVENT_SLUG}/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const json = await res.json();
+          if (!res.ok || !json.success) {
+            throw new Error(json.message || 'No pudimos registrar tu inscripción.');
+          }
+          msgEl.textContent = '¡Listo! Te llevamos al pago seguro…';
+          msgEl.className = 'reg-msg ok';
+          const d = json.data || {};
+          // Preferimos el checkout dinámico de MercadoPago (init_point); si no,
+          // el link estático del cupo; y como último recurso el href del botón.
+          const link = d.init_point || d.sandbox_init_point || d.payment_link || fallbackLink;
+          setTimeout(() => {
+            if (link) window.location.href = link;
+            else { msgEl.textContent = 'Inscripción guardada. Pronto te contactamos para el pago.'; submitB.disabled = false; submitB.textContent = 'Continuar al pago'; }
+          }, 900);
+        } catch (err) {
+          msgEl.textContent = err.message;
+          msgEl.className = 'reg-msg err';
+          submitB.disabled = false;
+          submitB.textContent = 'Continuar al pago';
+        }
+      });
+
+      window.__openReg = open;
+    })();
+
+    /* ── Retorno desde MercadoPago (?pago=aprobado|pendiente|fallido) ── */
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const pago = params.get('pago');
+      if (!pago) return;
+      const token = params.get('token');
+
+      const MAP = {
+        aprobado:  { bg: '#1f8f4e', text: '✅ ¡Pago aprobado! Tu cupo está confirmado. Te enviamos los detalles por correo.' },
+        pendiente: { bg: '#b8860b', text: '⏳ Tu pago está en proceso. Te confirmamos por correo apenas se acredite.' },
+        fallido:   { bg: '#b23b3b', text: '❌ El pago no se completó. Puedes intentarlo de nuevo desde “Quiero mi cupo”.' },
+      };
+      const cfg = MAP[pago] || MAP.pendiente;
+
+      const bar = document.createElement('div');
+      bar.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:1100;background:${cfg.bg};color:#fff;
+        font-family:Arial,sans-serif;font-size:14px;padding:12px 44px 12px 16px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.3)`;
+      bar.textContent = cfg.text;
+      const x = document.createElement('button');
+      x.textContent = '×';
+      x.setAttribute('aria-label', 'Cerrar');
+      x.style.cssText = 'position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:22px;cursor:pointer';
+      x.onclick = () => bar.remove();
+      bar.appendChild(x);
+      document.body.appendChild(bar);
+
+      // Confirma el estado real contra el backend (dispara el poll a MP si hace falta)
+      if (token && pago !== 'fallido') {
+        fetch(`${API_BASE}/public/events/thank-you/${token}`)
+          .then((r) => r.json())
+          .then((j) => {
+            if (j.success && j.data.status === 'paid') {
+              bar.style.background = MAP.aprobado.bg;
+              bar.childNodes[0].nodeValue = MAP.aprobado.text;
+            }
+          })
+          .catch(() => {});
+      }
+
+      // Limpia la URL para que el banner no reaparezca al recargar
+      window.history.replaceState({}, '', window.location.pathname + '#registro');
     })();
   </script>
   <!-- ── Barra flotante cupos ── -->
@@ -1489,6 +1605,65 @@
     <a href="#registro" class="cupos-float-cta">
       Quiero mi cupo
     </a>
+  </div>
+
+  <!-- ── Modal de inscripción ── -->
+  <style>
+    .reg-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;
+      background:rgba(8,8,12,.78);backdrop-filter:blur(4px);padding:20px}
+    .reg-overlay.open{display:flex}
+    .reg-box{background:#13131a;color:#fff;width:100%;max-width:420px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);padding:26px 24px;box-shadow:0 24px 60px rgba(0,0,0,.5);
+      max-height:92vh;overflow:auto}
+    .reg-box h3{margin:0 0 4px;font-size:20px;font-weight:800}
+    .reg-box .reg-sub{margin:0 0 18px;font-size:13px;color:#9a9aa6}
+    .reg-field{margin-bottom:13px}
+    .reg-field label{display:block;font-size:12px;font-weight:600;color:#c7c7d1;margin-bottom:5px}
+    .reg-field input{width:100%;box-sizing:border-box;background:#1d1d26;border:1px solid rgba(255,255,255,.12);
+      border-radius:9px;padding:11px 13px;color:#fff;font-size:14px;outline:none}
+    .reg-field input:focus{border-color:#F14807}
+    .reg-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+    #reg-submit{width:100%;margin-top:6px;background:#F14807;color:#fff;border:none;border-radius:10px;
+      padding:14px;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .2s}
+    #reg-submit:disabled{opacity:.6;cursor:default}
+    .reg-msg{min-height:18px;margin-top:10px;font-size:13px;text-align:center}
+    .reg-msg.ok{color:#37d67a}.reg-msg.err{color:#ff6b6b}
+    .reg-close{position:absolute;top:14px;right:16px;background:none;border:none;color:#9a9aa6;
+      font-size:24px;line-height:1;cursor:pointer}
+    .reg-box{position:relative}
+    .reg-legal{margin-top:12px;font-size:11px;color:#76767f;text-align:center}
+  </style>
+  <div class="reg-overlay" id="reg-modal">
+    <div class="reg-box">
+      <button class="reg-close" data-close-modal aria-label="Cerrar">×</button>
+      <h3 id="reg-modal-title">Inscripción</h3>
+      <p class="reg-sub">Completa tus datos y te llevamos al pago seguro con MercadoPago.</p>
+      <form id="reg-form" novalidate>
+        <input type="hidden" name="tier_key" value="base" />
+        <div class="reg-field">
+          <label for="reg-name">Nombre completo *</label>
+          <input id="reg-name" name="name" type="text" required minlength="2" maxlength="120" autocomplete="name" />
+        </div>
+        <div class="reg-field">
+          <label for="reg-email">Correo electrónico *</label>
+          <input id="reg-email" name="email" type="email" required maxlength="160" autocomplete="email" />
+        </div>
+        <div class="reg-field">
+          <label for="reg-phone">Teléfono / WhatsApp *</label>
+          <input id="reg-phone" name="phone" type="tel" required minlength="5" maxlength="30" autocomplete="tel" />
+        </div>
+        <div class="reg-field">
+          <label for="reg-city">Ciudad</label>
+          <input id="reg-city" name="city" type="text" maxlength="120" autocomplete="address-level2" />
+        </div>
+        <div class="reg-hp" aria-hidden="true">
+          <label>No llenar<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <button type="submit" id="reg-submit">Continuar al pago</button>
+        <div class="reg-msg" id="reg-msg"></div>
+        <p class="reg-legal">Al continuar aceptas el tratamiento de tus datos según la política de privacidad de Gruntt.</p>
+      </form>
+    </div>
   </div>
 
 </body>
