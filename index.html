@@ -1198,7 +1198,7 @@
             <li>Opción a premios por categoría</li>
             <li>Souvenir primer torneo Shootout de Colombia</li>
           </ul>
-          <a href="https://mpago.li/2oTM4dm" class="btn-reg dark js-register" data-tier="base" target="_blank" rel="noopener">
+          <a href="#registro" class="btn-reg dark js-register" data-tier="base">
             QUIERO CUPO BASE · $120K
           </a>
           <div class="mp-badge">
@@ -1219,7 +1219,7 @@
             <li>Sesión de fotos profesional en el evento</li>
             <li>Contenido personalizado para redes sociales</li>
           </ul>
-          <a href="https://mpago.li/1mB4yQh" class="btn-reg light js-register" data-tier="pro" target="_blank" rel="noopener">
+          <a href="#registro" class="btn-reg light js-register" data-tier="pro">
             QUIERO CUPO PRO · $180K
           </a>
           <div class="mp-badge">
@@ -1528,7 +1528,9 @@
           const d = json.data || {};
           // Preferimos el checkout dinámico de MercadoPago (init_point); si no,
           // el link estático del cupo; y como último recurso el href del botón.
-          const link = d.init_point || d.sandbox_init_point || d.payment_link || fallbackLink;
+          // Solo redirigimos a una URL de pago real; el fallback (#registro) no cuenta.
+          const candidate = d.init_point || d.sandbox_init_point || d.payment_link || fallbackLink;
+          const link = /^https?:\/\//.test(candidate || "") ? candidate : null;
           setTimeout(() => {
             if (link) window.location.href = link;
             else { msgEl.textContent = 'Inscripción guardada. Pronto te contactamos para el pago.'; submitB.disabled = false; submitB.textContent = 'Continuar al pago'; }
