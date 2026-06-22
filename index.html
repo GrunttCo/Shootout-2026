@@ -536,6 +536,20 @@
       font-family: 'Bebas Neue', sans-serif;
       font-size: 80px; line-height: 1; margin-bottom: 4px;
     }
+    .price-original {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px; line-height: 1;
+      text-decoration: line-through;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 2px;
+    }
+    .price-card.featured .price-original { color: rgba(0,0,0,0.3); }
+    .price-promo-label {
+      font-size: 9px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--lime);
+      margin-bottom: 2px; display: block;
+    }
+    .price-card.featured .price-promo-label { color: rgba(0,0,0,0.6); }
     .price-per { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 36px; }
     .price-card.featured .price-per { color: rgba(255,255,255,0.65); }
     .price-list { list-style: none; margin-bottom: 40px; }
@@ -1190,7 +1204,9 @@
         <div class="price-card reveal">
           <span class="price-tag">Cupo Base</span>
           <div class="price-name">Inscripción Base</div>
-          <div class="price-amount">$120K</div>
+          <div class="price-original">$120K</div>
+          <span class="price-promo-label">Promo · hasta el dom 28 jun</span>
+          <div class="price-amount">$89K</div>
           <div class="price-per">COP por participante · cupos limitados</div>
           <ul class="price-list">
             <li>Participación en todas las fases del torneo</li>
@@ -1199,7 +1215,7 @@
             <li>Souvenir primer torneo Shootout de Colombia</li>
           </ul>
           <a href="#registro" class="btn-reg dark js-register" data-tier="base">
-            QUIERO CUPO BASE · $120K
+            QUIERO CUPO BASE · $89K
           </a>
           <div class="mp-badge">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="#009EE3"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
@@ -1211,7 +1227,9 @@
         <div class="price-card featured reveal d1">
           <span class="price-tag">★ Cupo Pro</span>
           <div class="price-name">Inscripción Pro</div>
-          <div class="price-amount">$180K</div>
+          <div class="price-original">$180K</div>
+          <span class="price-promo-label">Promo · hasta el dom 28 jun</span>
+          <div class="price-amount">$129K</div>
           <div class="price-per">COP por participante · experiencia completa</div>
           <ul class="price-list">
             <li>Todo lo incluido en el cupo base</li>
@@ -1220,7 +1238,7 @@
             <li>Contenido personalizado para redes sociales</li>
           </ul>
           <a href="#registro" class="btn-reg light js-register" data-tier="pro">
-            QUIERO CUPO PRO · $180K
+            QUIERO CUPO PRO · $129K
           </a>
           <div class="mp-badge">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="#009EE3"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
