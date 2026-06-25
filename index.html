@@ -1548,7 +1548,57 @@
       const titleEl = document.getElementById('reg-modal-title');
       const msgEl   = document.getElementById('reg-msg');
       const submitB = document.getElementById('reg-submit');
+      const promoInput = document.getElementById('reg-promo');
+      const promoBtn   = document.getElementById('reg-promo-btn');
+      const promoMsg   = document.getElementById('reg-promo-msg');
+      const priceBox   = document.getElementById('reg-price-summary');
       let fallbackLink = null; // href del botón, por si el backend falla
+      let appliedPromo = null; // { code, final_cop, ... } cuando un código fue validado
+
+      const fmtCop = (n) =>
+        '$' + Number(n || 0).toLocaleString('es-CO', { maximumFractionDigits: 0 });
+
+      function resetPromo() {
+        appliedPromo = null;
+        if (priceBox) priceBox.style.display = 'none';
+        if (promoMsg) { promoMsg.textContent = ''; promoMsg.className = 'reg-msg'; }
+      }
+
+      async function applyPromo() {
+        const code = (promoInput.value || '').trim().toUpperCase();
+        if (!code) { resetPromo(); return; }
+        promoBtn.disabled = true;
+        promoMsg.textContent = 'Validando…';
+        promoMsg.className = 'reg-msg';
+        try {
+          const res = await fetch(`${API_BASE}/public/events/${EVENT_SLUG}/validate-code`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code, tier_key: form.tier_key.value }),
+          });
+          const json = await res.json();
+          if (!res.ok || !json.success) {
+            throw new Error(json.message || 'Código no válido.');
+          }
+          appliedPromo = json.data;
+          document.getElementById('reg-price-original').textContent = fmtCop(json.data.original_cop);
+          document.getElementById('reg-price-pct').textContent = json.data.discount_percentage;
+          document.getElementById('reg-price-discount').textContent = '-' + fmtCop(json.data.discount_cop);
+          document.getElementById('reg-price-final').textContent = fmtCop(json.data.final_cop);
+          priceBox.style.display = 'block';
+          promoMsg.textContent = '¡Código aplicado!';
+          promoMsg.className = 'reg-msg ok';
+        } catch (err) {
+          resetPromo();
+          promoMsg.textContent = err.message;
+          promoMsg.className = 'reg-msg err';
+        } finally {
+          promoBtn.disabled = false;
+        }
+      }
+
+      if (promoBtn) promoBtn.addEventListener('click', applyPromo);
+      if (promoInput) promoInput.addEventListener('input', resetPromo);
 
       function open(tier, link) {
         fallbackLink = link;
@@ -1556,6 +1606,8 @@
         titleEl.textContent = 'Inscripción Cupo Base · $120K';
         msgEl.textContent = '';
         msgEl.className = 'reg-msg';
+        if (promoInput) promoInput.value = '';
+        resetPromo();
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
         setTimeout(() => form.name.focus(), 100);
@@ -1590,6 +1642,12 @@
           city: form.city.value.trim() || null,
           website: form.website.value,
         };
+        // Solo enviamos el código si fue validado con "Aplicar" (evita romper la
+        // inscripción con un código mal escrito que el backend rechazaría).
+        const typedCode = (promoInput?.value || '').trim().toUpperCase();
+        if (appliedPromo && appliedPromo.code === typedCode) {
+          payload.promo_code = appliedPromo.code;
+        }
         try {
           const res = await fetch(`${API_BASE}/public/events/${EVENT_SLUG}/register`, {
             method: 'POST',
@@ -1743,6 +1801,23 @@
         <div class="reg-field">
           <label for="reg-city">Ciudad</label>
           <input id="reg-city" name="city" type="text" maxlength="120" autocomplete="address-level2" />
+        </div>
+        <div class="reg-field">
+          <label for="reg-promo">Código de descuento (opcional)</label>
+          <div style="display:flex;gap:8px">
+            <input id="reg-promo" name="promo_code" type="text" maxlength="20"
+              autocomplete="off" style="flex:1;text-transform:uppercase" placeholder="Ej: SHOOT20" />
+            <button type="button" id="reg-promo-btn"
+              style="background:#2a2a35;color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:0 16px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">
+              Aplicar
+            </button>
+          </div>
+          <div class="reg-msg" id="reg-promo-msg" style="text-align:left;min-height:0"></div>
+        </div>
+        <div id="reg-price-summary" style="display:none;margin:4px 0 12px;font-size:13px;color:#c7c7d1">
+          <div style="display:flex;justify-content:space-between"><span>Precio</span><span id="reg-price-original"></span></div>
+          <div style="display:flex;justify-content:space-between;color:#37d67a"><span>Descuento (<span id="reg-price-pct"></span>%)</span><span id="reg-price-discount"></span></div>
+          <div style="display:flex;justify-content:space-between;font-weight:800;color:#fff;margin-top:4px"><span>Total</span><span id="reg-price-final"></span></div>
         </div>
         <div class="reg-hp" aria-hidden="true">
           <label>No llenar<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
