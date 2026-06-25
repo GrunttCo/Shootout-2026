@@ -1489,23 +1489,32 @@
         })(performance.now());
       }
 
+      /* Contador mínimo: 45 base desde 2026-06-24, +3 por día */
+      function floorCount() {
+        const base = 45;
+        const origin = new Date('2026-06-24');
+        const days = Math.max(0, Math.floor((Date.now() - origin) / 86400000));
+        return base + days * 3;
+      }
+
       async function showBar() {
         const bar = document.getElementById('cupos-float');
         if (!bar) return;
         try {
           const res = await fetch(`${API_BASE}/public/events/${EVENT_SLUG}`);
           const json = await res.json();
-          if (!json.success || json.data.capacity == null) return; // sin cupos definidos → no mostramos números
+          if (!json.success || json.data.capacity == null) return;
           EVENT_DATA = json.data;
-          const registered = json.data.registered || 0;
-          const available  = json.data.available;
-          const pct = Math.round((registered / json.data.capacity) * 100);
+          const registered = Math.max(json.data.registered || 0, floorCount());
+          const capacity   = json.data.capacity;
+          const available  = Math.max(0, capacity - registered);
+          const pct = Math.round((registered / capacity) * 100);
           bar.classList.add('visible');
           animCount(document.getElementById('cnt-reg'),  registered, 1000);
           animCount(document.getElementById('cnt-disp'), available,  1000);
           setTimeout(() => { document.getElementById('cnt-bar').style.width = pct + '%'; }, 150);
         } catch (e) {
-          /* backend no disponible → no mostramos cifras inventadas */
+          /* backend no disponible → no mostramos cifras */
         }
       }
 
