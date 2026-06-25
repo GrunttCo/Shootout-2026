@@ -519,6 +519,7 @@
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 2px; margin-top: 44px;
     }
+    .pricing-single { grid-template-columns: minmax(0, 480px); justify-content: center; }
     .price-card { background: var(--dark3); padding: 48px 44px; }
     .price-card.featured { background: var(--orange); }
     .price-tag {
@@ -1234,7 +1235,7 @@
 
 
 
-      <div class="pricing-grid">
+      <div class="pricing-grid pricing-single">
         <!-- base -->
         <div class="price-card reveal">
           <span class="price-tag">Cupo Base</span>
@@ -1247,33 +1248,10 @@
             <li>Participación en todas las fases del torneo</li>
             <li>Acceso al streaming en vivo por YouTube</li>
             <li>Opción a premios por categoría</li>
-            <li>Souvenir primer torneo Shootout de Colombia</li>
+            <li>Fotografía profesional en el evento</li>
           </ul>
           <a href="#registro" class="btn-reg dark js-register" data-tier="base">
             QUIERO CUPO BASE · $89K
-          </a>
-          <div class="mp-badge">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="#009EE3"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-            Pago seguro con MercadoPago
-          </div>
-        </div>
-
-        <!-- premium -->
-        <div class="price-card featured reveal d1">
-          <span class="price-tag">★ Cupo Pro</span>
-          <div class="price-name">Inscripción Pro</div>
-          <div class="price-original">$180K</div>
-          <span class="price-promo-label">Promo · hasta el dom 28 jun</span>
-          <div class="price-amount">$129K</div>
-          <div class="price-per">COP por participante · experiencia completa</div>
-          <ul class="price-list">
-            <li>Todo lo incluido en el cupo base</li>
-            <li>Kit oficial Gruntt × By Eliana (gorra + mini balón)</li>
-            <li>Sesión de fotos profesional en el evento</li>
-            <li>Contenido personalizado para redes sociales</li>
-          </ul>
-          <a href="#registro" class="btn-reg light js-register" data-tier="pro">
-            QUIERO CUPO PRO · $129K
           </a>
           <div class="mp-badge">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="#009EE3"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
@@ -1538,7 +1516,7 @@
       function open(tier, link) {
         fallbackLink = link;
         form.tier_key.value = tier;
-        titleEl.textContent = tier === 'pro' ? 'Inscripción Cupo Pro · $180K' : 'Inscripción Cupo Base · $120K';
+        titleEl.textContent = 'Inscripción Cupo Base · $120K';
         msgEl.textContent = '';
         msgEl.className = 'reg-msg';
         modal.classList.add('open');
