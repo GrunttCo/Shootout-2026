@@ -70,13 +70,13 @@
     "name": "Shoot-Out Gruntt × By Eliana 2026",
     "description": "Torneo Shoot-Out individual. El formato de la MLS — arranca desde 32m, avanza y anota. 128 participantes en Bogotá.",
     "sport": "Fútbol",
-    "startDate": "2026-08-17T09:00:00-05:00",
+    "startDate": "2026-08-17T08:00:00-05:00",
     "endDate": "2026-08-17T20:00:00-05:00",
     "eventStatus": "https://schema.org/EventScheduled",
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "location": {
       "@type": "Place",
-      "name": "Bogotá, Colombia",
+      "name": "Creativo Norte",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Bogotá",
@@ -1401,11 +1401,11 @@
       <div class="registro-info">
         <div class="ri-item">
           <div class="ri-label">Fecha y lugar</div>
-          <p>Lunes 17 de agosto de 2026<br>Bogotá, Colombia<br><span class="pending">⚠ Venue por confirmar</span></p>
+          <p>Lunes 17 de agosto de 2026<br>Creativo Norte · Bogotá, Colombia</p>
         </div>
         <div class="ri-item">
           <div class="ri-label">Hora y streaming</div>
-          <p><span class="pending">⚠ Hora por confirmar</span><br>Todo el torneo en YouTube Gruntt<br>Fotografía profesional incluida</p>
+          <p>8:00 am · Inicio del torneo<br>Todo el torneo en YouTube Gruntt<br>Fotografía profesional incluida</p>
         </div>
         <div class="ri-item">
           <div class="ri-label">Contacto</div>
@@ -1553,8 +1553,8 @@
     // ---- COUNTDOWN ----
     function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
     function updateCountdown() {
-      // Event: August 17, 2026, 9am Bogotá (UTC-5)
-      const event = new Date('2026-08-17T09:00:00-05:00');
+      // Event: August 17, 2026, 8am Bogotá (UTC-5)
+      const event = new Date('2026-08-17T08:00:00-05:00');
       const diff  = event - Date.now();
       const dDays  = document.getElementById('cd-days');
       const dHours = document.getElementById('cd-hours');
